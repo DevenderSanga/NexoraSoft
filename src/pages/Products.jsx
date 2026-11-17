@@ -143,6 +143,7 @@ function Products() {
   const [activeCategory, setActiveCategory] = useState("All Products");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [demoTab, setDemoTab] = useState("overview");
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
@@ -211,9 +212,8 @@ function Products() {
         {categories.map((category) => (
           <button
             key={category}
-            className={`category-btn ${
-              activeCategory === category ? "active" : ""
-            }`}
+            className={`category-btn ${activeCategory === category ? "active" : ""
+              }`}
             onClick={() => setActiveCategory(category)}
           >
             {category}
@@ -301,6 +301,249 @@ function Products() {
         )}
 
       </div>
+
+      {/* PRODUCT DEMO PREVIEW */}
+
+      <section className="products-demo-section" id="demo">
+        <div className="demo-section-header">
+          <span className="products-label">
+            <Sparkles size={15} />
+            EXPERIENCE NEXORASOFT
+          </span>
+
+          <h2>
+            Explore Our Software
+            <span> In Action.</span>
+          </h2>
+
+          <p>
+            Get a closer look at how our software helps businesses
+            manage projects, monitor performance and simplify daily operations.
+          </p>
+        </div>
+
+        <div className="demo-preview-card">
+
+          <div className="demo-preview-top">
+            <div className="demo-preview-brand">
+              <div className="demo-brand-icon">
+                <Layers3 size={21} />
+              </div>
+              <div>
+                <strong>NexoraSoft Workspace</strong>
+                <small>Business Management Platform</small>
+              </div>
+            </div>
+
+            <span className="demo-live-status">
+              <span></span>
+              Live Preview
+            </span>
+          </div>
+
+          <div className="demo-preview-body">
+
+            <div className="demo-preview-sidebar">
+              <div className="demo-sidebar-logo">
+                <Layers3 size={22} />
+                <strong>Nexora</strong>
+              </div>
+
+              <div className="demo-sidebar-item active">
+                <BarChart3 size={17} />
+                Overview
+              </div>
+
+              <div className="demo-sidebar-item">
+                <Workflow size={17} />
+                Projects
+              </div>
+
+              <div className="demo-sidebar-item">
+                <Users size={17} />
+                Customers
+              </div>
+
+              <div className="demo-sidebar-item">
+                <CreditCard size={17} />
+                Payments
+              </div>
+            </div>
+
+            <div className="demo-preview-main">
+
+              <div className="demo-preview-heading">
+                <div>
+                  <small>WORKSPACE / DASHBOARD</small>
+                  <h3>Business Overview</h3>
+                </div>
+
+                <span className="demo-date">November 2026</span>
+              </div>
+
+              <div className="demo-tabs">
+                <button
+                  className={demoTab === "overview" ? "active" : ""}
+                  onClick={() => setDemoTab("overview")}
+                >
+                  Overview
+                </button>
+
+                <button
+                  className={demoTab === "projects" ? "active" : ""}
+                  onClick={() => setDemoTab("projects")}
+                >
+                  Projects
+                </button>
+
+                <button
+                  className={demoTab === "analytics" ? "active" : ""}
+                  onClick={() => setDemoTab("analytics")}
+                >
+                  Analytics
+                </button>
+              </div>
+
+              {demoTab === "overview" && (
+                <div className="demo-tab-content">
+                  <div className="demo-stats-grid">
+                    <div className="demo-stat-card">
+                      <span>Total Projects</span>
+                      <strong>248</strong>
+                      <small>+12.5% this month</small>
+                    </div>
+
+                    <div className="demo-stat-card">
+                      <span>Active Customers</span>
+                      <strong>1,840</strong>
+                      <small>+8.2% this month</small>
+                    </div>
+
+                    <div className="demo-stat-card">
+                      <span>Total Revenue</span>
+                      <strong>$48.6K</strong>
+                      <small>+15.4% this month</small>
+                    </div>
+                  </div>
+
+                  <div className="demo-activity">
+                    <h4>Recent Activity</h4>
+
+                    <div>
+                      <span className="activity-dot purple-dot"></span>
+                      <p>
+                        New project created
+                        <small>Website redesign · 10 minutes ago</small>
+                      </p>
+                      <strong>New</strong>
+                    </div>
+
+                    <div>
+                      <span className="activity-dot green-dot"></span>
+                      <p>
+                        Payment received
+                        <small>Invoice #INV-2048 · 1 hour ago</small>
+                      </p>
+                      <strong>Paid</strong>
+                    </div>
+
+                    <div>
+                      <span className="activity-dot orange-dot"></span>
+                      <p>
+                        Project completed
+                        <small>Mobile application · 3 hours ago</small>
+                      </p>
+                      <strong>Done</strong>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {demoTab === "projects" && (
+                <div className="demo-tab-content">
+                  <div className="demo-project-heading">
+                    <h4>Project Management</h4>
+                    <span>3 Sample Projects</span>
+                  </div>
+
+                  {[
+                    { name: "Website Redesign", progress: 85, status: "In Progress" },
+                    { name: "Mobile Application", progress: 100, status: "Completed" },
+                    { name: "Marketing Campaign", progress: 45, status: "In Progress" },
+                  ].map((project) => (
+                    <div className="demo-project-row" key={project.name}>
+                      <div>
+                        <strong>{project.name}</strong>
+                        <span>{project.status}</span>
+                      </div>
+
+                      <div className="demo-progress-track">
+                        <span style={{ width: `${project.progress}%` }}></span>
+                      </div>
+
+                      <small>{project.progress}%</small>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {demoTab === "analytics" && (
+                <div className="demo-tab-content">
+                  <div className="demo-analytics-heading">
+                    <h4>Performance Analytics</h4>
+                    <span>Monthly performance</span>
+                  </div>
+
+                  <div className="demo-chart">
+                    {[35, 55, 42, 75, 60, 88, 68, 95, 72, 82, 65, 100].map(
+                      (height, index) => (
+                        <div className="demo-chart-column" key={index}>
+                          <span style={{ height: `${height}%` }}></span>
+                          <small>
+                            {["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"][index]}
+                          </small>
+                        </div>
+                      )
+                    )}
+                  </div>
+
+                  <div className="demo-analytics-summary">
+                    <div>
+                      <span>Growth</span>
+                      <strong>+24.8%</strong>
+                    </div>
+
+                    <div>
+                      <span>Conversion Rate</span>
+                      <strong>68.5%</strong>
+                    </div>
+
+                    <div>
+                      <span>Efficiency</span>
+                      <strong>92.4%</strong>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </div>
+
+          <div className="demo-preview-footer">
+            <span>
+              <Sparkles size={15} />
+              Interactive sample workspace
+            </span>
+
+            <a href="/request-demo">
+              Request Personalized Demo
+              <ArrowRight size={16} />
+            </a>
+          </div>
+
+        </div>
+      </section>
+
 
       {/* PRODUCT DETAILS MODAL */}
       {selectedProduct && (

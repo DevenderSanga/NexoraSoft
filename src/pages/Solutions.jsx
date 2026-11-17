@@ -17,6 +17,7 @@ import {
   Clock3,
 } from "lucide-react";
 
+import { Link } from "react-router-dom";
 import "./Solutions.css";
 
 const solutionData = [
@@ -198,10 +199,14 @@ function Solutions() {
                 ))}
               </div>
 
-              <a href="#products" className="industry-link">
+              {/* EXPLORE SOFTWARE */}
+              <Link
+                to="/products#products"
+                className="industry-link"
+              >
                 Explore Software
                 <ArrowRight size={17} />
-              </a>
+              </Link>
             </div>
 
             <div className="industry-visual">

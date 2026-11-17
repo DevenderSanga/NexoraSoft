@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Check,
   X,
@@ -99,16 +99,38 @@ const plans = [
 
 function Pricing() {
   const [billing, setBilling] = useState("monthly");
+  const [selectedPlan, setSelectedPlan] = useState("professional");
+
+  useEffect(() => {
+    if (window.location.hash === "#demo") {
+      const timer = setTimeout(() => {
+        document.getElementById("demo")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const getPrice = (plan) => {
     return billing === "monthly"
       ? plan.monthlyPrice
       : plan.yearlyPrice;
   };
+  const activeDemoPlan =
+    plans.find((plan) => plan.id === selectedPlan) || plans[2];
+
+  const ActivePlanIcon = activeDemoPlan.icon;
 
   const handlePlanSelection = (planName) => {
-  window.location.hash = "demo";
-};
+    setSelectedPlan(planName.toLowerCase());
+    document.getElementById("demo")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
 
   return (
     <section className="pricing-section" id="pricing">
@@ -144,9 +166,8 @@ function Pricing() {
 
           <button
             type="button"
-            className={`billing-switch ${
-              billing === "yearly" ? "yearly-active" : ""
-            }`}
+            className={`billing-switch ${billing === "yearly" ? "yearly-active" : ""
+              }`}
             onClick={() =>
               setBilling((current) =>
                 current === "monthly" ? "yearly" : "monthly"
@@ -178,9 +199,8 @@ function Pricing() {
 
             return (
               <article
-                className={`pricing-card ${
-                  plan.popular ? "popular-plan" : ""
-                }`}
+                className={`pricing-card ${plan.popular ? "popular-plan" : ""
+                  }`}
                 key={plan.id}
               >
                 {plan.popular && (
@@ -228,9 +248,8 @@ function Pricing() {
 
                 <button
                   type="button"
-                  className={`pricing-button ${
-                    plan.popular ? "pricing-button-primary" : ""
-                  }`}
+                  className={`pricing-button ${plan.popular ? "pricing-button-primary" : ""
+                    }`}
                   onClick={() => handlePlanSelection(plan.name)}
                 >
                   {plan.buttonText}
@@ -288,6 +307,182 @@ function Pricing() {
             <ArrowRight size={17} />
           </a>
         </div>
+
+        {/* PRICING DEMO SECTION */}
+
+        <section className="pricing-demo-section" id="demo">
+
+          <div className="pricing-demo-heading">
+            <span className="pricing-eyebrow">
+              <Sparkles size={16} />
+              EXPLORE YOUR SUBSCRIPTION
+            </span>
+
+            <h2>
+              See How Your
+              <span> Plan Works.</span>
+            </h2>
+
+            <p>
+              Preview a sample subscription dashboard and explore
+              the benefits included in your selected pricing plan.
+            </p>
+          </div>
+
+          <div className="pricing-demo-card">
+
+            <div className="pricing-demo-top">
+              <div>
+                <span className="demo-dashboard-label">
+                  NEXORASOFT / SUBSCRIPTION OVERVIEW
+                </span>
+                <h3>Subscription Dashboard</h3>
+              </div>
+
+              <span className="demo-subscription-status">
+                <span></span>
+                Active Preview
+              </span>
+            </div>
+
+            <div className="pricing-demo-content">
+
+              <div className="pricing-demo-plan">
+
+                <div className="pricing-demo-plan-icon">
+                  <ActivePlanIcon size={27} />
+                </div>
+
+                <span className="demo-plan-label">
+                  YOUR SELECTED PLAN
+                </span>
+
+                <h3>{activeDemoPlan.name}</h3>
+
+                <p>{activeDemoPlan.description}</p>
+
+                <div className="demo-plan-price">
+                  <strong>${getPrice(activeDemoPlan)}</strong>
+                  <span>/ user / month</span>
+                </div>
+
+                <span className="demo-billing-label">
+                  {billing === "monthly" ? "Monthly billing" : "Yearly billing"}
+                </span>
+
+                <div className="demo-plan-divider"></div>
+
+                <h4>Plan Benefits</h4>
+
+                {activeDemoPlan.features.map((feature) => (
+                  <div className="demo-plan-feature" key={feature.name}>
+                    {feature.included ? (
+                      <Check size={15} />
+                    ) : (
+                      <X size={15} />
+                    )}
+                    <span>{feature.name}</span>
+                  </div>
+                ))}
+
+              </div>
+
+              <div className="pricing-demo-dashboard">
+
+                <div className="demo-dashboard-welcome">
+                  <div>
+                    <small>WELCOME BACK</small>
+                    <h3>Your Business Workspace</h3>
+                  </div>
+
+                  <div className="demo-avatar">JD</div>
+                </div>
+
+                <div className="demo-subscription-stats">
+
+                  <div className="demo-sub-stat">
+                    <span>Current Plan</span>
+                    <strong>{activeDemoPlan.name}</strong>
+                    <small>Selected subscription</small>
+                  </div>
+
+                  <div className="demo-sub-stat">
+                    <span>Monthly Price</span>
+                    <strong>${getPrice(activeDemoPlan)}</strong>
+                    <small>Per user</small>
+                  </div>
+
+                  <div className="demo-sub-stat">
+                    <span>Plan Features</span>
+                    <strong>
+                      {activeDemoPlan.features.filter((feature) => feature.included).length}
+                    </strong>
+                    <small>Included benefits</small>
+                  </div>
+
+                </div>
+
+                <div className="demo-usage-card">
+                  <div className="demo-usage-heading">
+                    <h4>Workspace Activity</h4>
+                    <span>Sample Data</span>
+                  </div>
+
+                  <div className="demo-usage-item">
+                    <div>
+                      <span>Projects Managed</span>
+                      <strong>76%</strong>
+                    </div>
+                    <div className="demo-usage-track">
+                      <span style={{ width: "76%" }}></span>
+                    </div>
+                  </div>
+
+                  <div className="demo-usage-item">
+                    <div>
+                      <span>Team Productivity</span>
+                      <strong>88%</strong>
+                    </div>
+                    <div className="demo-usage-track">
+                      <span style={{ width: "88%" }}></span>
+                    </div>
+                  </div>
+
+                  <div className="demo-usage-item">
+                    <div>
+                      <span>Platform Utilization</span>
+                      <strong>64%</strong>
+                    </div>
+                    <div className="demo-usage-track">
+                      <span style={{ width: "64%" }}></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="demo-subscription-footer">
+                  <Check size={17} />
+                  Your selected plan is ready to explore.
+                </div>
+
+              </div>
+            </div>
+
+            <div className="pricing-demo-footer">
+              <div>
+                <Sparkles size={18} />
+                <span>This is a sample subscription dashboard.</span>
+              </div>
+
+              <a href="/request-demo">
+                Request Personalized Demo
+                <ArrowRight size={16} />
+              </a>
+            </div>
+
+          </div>
+
+        </section>
+
 
         {/* TRUST NOTE */}
 
