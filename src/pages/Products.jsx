@@ -14,6 +14,10 @@ import {
   MessageSquare,
   Sparkles,
   Layers3,
+  LayoutDashboard,
+  FolderKanban,
+  UserRound,
+  Receipt,
 } from "lucide-react";
 
 import "./Products.css";
@@ -139,6 +143,95 @@ const categories = [
   "Collaboration",
 ];
 
+const sampleProjects = [
+  {
+    name: "Website Redesign",
+    client: "Acme Solutions",
+    progress: 85,
+    status: "In Progress",
+  },
+  {
+    name: "Mobile Application",
+    client: "BrightTech",
+    progress: 100,
+    status: "Completed",
+  },
+  {
+    name: "Marketing Campaign",
+    client: "Growth Studio",
+    progress: 45,
+    status: "In Progress",
+  },
+  {
+    name: "CRM Integration",
+    client: "Nova Systems",
+    progress: 65,
+    status: "In Progress",
+  },
+];
+
+const sampleCustomers = [
+  {
+    name: "Olivia Martin",
+    company: "Acme Solutions",
+    email: "olivia@example.com",
+    status: "Active",
+    initials: "OM",
+  },
+  {
+    name: "James Wilson",
+    company: "BrightTech",
+    email: "james@example.com",
+    status: "Active",
+    initials: "JW",
+  },
+  {
+    name: "Sophia Garcia",
+    company: "Growth Studio",
+    email: "sophia@example.com",
+    status: "Pending",
+    initials: "SG",
+  },
+  {
+    name: "Noah Anderson",
+    company: "Nova Systems",
+    email: "noah@example.com",
+    status: "Active",
+    initials: "NA",
+  },
+];
+
+const samplePayments = [
+  {
+    invoice: "INV-2048",
+    customer: "Acme Solutions",
+    date: "Nov 16, 2026",
+    amount: "$1,250.00",
+    status: "Paid",
+  },
+  {
+    invoice: "INV-2047",
+    customer: "BrightTech",
+    date: "Nov 14, 2026",
+    amount: "$850.00",
+    status: "Pending",
+  },
+  {
+    invoice: "INV-2046",
+    customer: "Growth Studio",
+    date: "Nov 12, 2026",
+    amount: "$2,400.00",
+    status: "Paid",
+  },
+  {
+    invoice: "INV-2045",
+    customer: "Nova Systems",
+    date: "Nov 10, 2026",
+    amount: "$675.00",
+    status: "Overdue",
+  },
+];
+
 function Products() {
   const [activeCategory, setActiveCategory] = useState("All Products");
   const [searchTerm, setSearchTerm] = useState("");
@@ -157,6 +250,13 @@ function Products() {
 
     return matchesCategory && matchesSearch;
   });
+
+  const sidebarItems = [
+    { id: "overview", label: "Overview", icon: LayoutDashboard },
+    { id: "projects", label: "Projects", icon: FolderKanban },
+    { id: "customers", label: "Customers", icon: UserRound },
+    { id: "payments", label: "Payments", icon: Receipt },
+  ];
 
   return (
     <section className="products-section" id="products">
@@ -212,8 +312,9 @@ function Products() {
         {categories.map((category) => (
           <button
             key={category}
-            className={`category-btn ${activeCategory === category ? "active" : ""
-              }`}
+            className={`category-btn ${
+              activeCategory === category ? "active" : ""
+            }`}
             onClick={() => setActiveCategory(category)}
           >
             {category}
@@ -223,14 +324,12 @@ function Products() {
 
       {/* PRODUCTS GRID */}
       <div className="products-grid">
-
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => {
             const Icon = product.icon;
 
             return (
               <article className="software-card" key={product.id}>
-
                 <div className="software-card-top">
                   <div className={`software-icon ${product.color}`}>
                     <Icon size={27} />
@@ -277,7 +376,6 @@ function Products() {
                     <ArrowUpRight size={16} />
                   </button>
                 </div>
-
               </article>
             );
           })
@@ -299,11 +397,9 @@ function Products() {
             </button>
           </div>
         )}
-
       </div>
 
       {/* PRODUCT DEMO PREVIEW */}
-
       <section className="products-demo-section" id="demo">
         <div className="demo-section-header">
           <span className="products-label">
@@ -324,11 +420,13 @@ function Products() {
 
         <div className="demo-preview-card">
 
+          {/* DEMO HEADER */}
           <div className="demo-preview-top">
             <div className="demo-preview-brand">
               <div className="demo-brand-icon">
                 <Layers3 size={21} />
               </div>
+
               <div>
                 <strong>NexoraSoft Workspace</strong>
                 <small>Business Management Platform</small>
@@ -343,44 +441,51 @@ function Products() {
 
           <div className="demo-preview-body">
 
+            {/* FUNCTIONAL SIDEBAR */}
             <div className="demo-preview-sidebar">
               <div className="demo-sidebar-logo">
                 <Layers3 size={22} />
                 <strong>Nexora</strong>
               </div>
 
-              <div className="demo-sidebar-item active">
-                <BarChart3 size={17} />
-                Overview
-              </div>
+              {sidebarItems.map((item) => {
+                const Icon = item.icon;
 
-              <div className="demo-sidebar-item">
-                <Workflow size={17} />
-                Projects
-              </div>
-
-              <div className="demo-sidebar-item">
-                <Users size={17} />
-                Customers
-              </div>
-
-              <div className="demo-sidebar-item">
-                <CreditCard size={17} />
-                Payments
-              </div>
+                return (
+                  <button
+                    type="button"
+                    key={item.id}
+                    className={`demo-sidebar-item ${
+                      demoTab === item.id ? "active" : ""
+                    }`}
+                    onClick={() => setDemoTab(item.id)}
+                  >
+                    <Icon size={17} />
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
             </div>
 
+            {/* MAIN DASHBOARD */}
             <div className="demo-preview-main">
 
               <div className="demo-preview-heading">
                 <div>
                   <small>WORKSPACE / DASHBOARD</small>
-                  <h3>Business Overview</h3>
+                  <h3>
+                    {demoTab === "overview" && "Business Overview"}
+                    {demoTab === "projects" && "Project Management"}
+                    {demoTab === "customers" && "Customer Management"}
+                    {demoTab === "payments" && "Payment Management"}
+                    {demoTab === "analytics" && "Performance Analytics"}
+                  </h3>
                 </div>
 
                 <span className="demo-date">November 2026</span>
               </div>
 
+              {/* TOP TABS */}
               <div className="demo-tabs">
                 <button
                   className={demoTab === "overview" ? "active" : ""}
@@ -404,6 +509,7 @@ function Products() {
                 </button>
               </div>
 
+              {/* OVERVIEW */}
               {demoTab === "overview" && (
                 <div className="demo-tab-content">
                   <div className="demo-stats-grid">
@@ -459,26 +565,28 @@ function Products() {
                 </div>
               )}
 
+              {/* PROJECTS */}
               {demoTab === "projects" && (
                 <div className="demo-tab-content">
                   <div className="demo-project-heading">
-                    <h4>Project Management</h4>
-                    <span>3 Sample Projects</span>
+                    <h4>All Projects</h4>
+                    <span>{sampleProjects.length} Sample Projects</span>
                   </div>
 
-                  {[
-                    { name: "Website Redesign", progress: 85, status: "In Progress" },
-                    { name: "Mobile Application", progress: 100, status: "Completed" },
-                    { name: "Marketing Campaign", progress: 45, status: "In Progress" },
-                  ].map((project) => (
-                    <div className="demo-project-row" key={project.name}>
+                  {sampleProjects.map((project) => (
+                    <div
+                      className="demo-project-row"
+                      key={project.name}
+                    >
                       <div>
                         <strong>{project.name}</strong>
-                        <span>{project.status}</span>
+                        <span>{project.client} · {project.status}</span>
                       </div>
 
                       <div className="demo-progress-track">
-                        <span style={{ width: `${project.progress}%` }}></span>
+                        <span
+                          style={{ width: `${project.progress}%` }}
+                        ></span>
                       </div>
 
                       <small>{project.progress}%</small>
@@ -487,6 +595,99 @@ function Products() {
                 </div>
               )}
 
+              {/* CUSTOMERS */}
+              {demoTab === "customers" && (
+                <div className="demo-tab-content">
+                  <div className="demo-project-heading">
+                    <h4>Customer Directory</h4>
+                    <span>{sampleCustomers.length} Sample Customers</span>
+                  </div>
+
+                  <div className="demo-customer-list">
+                    {sampleCustomers.map((customer) => (
+                      <div
+                        className="demo-customer-row"
+                        key={customer.email}
+                      >
+                        <div className="demo-customer-avatar">
+                          {customer.initials}
+                        </div>
+
+                        <div className="demo-customer-info">
+                          <strong>{customer.name}</strong>
+                          <span>{customer.company}</span>
+                          <small>{customer.email}</small>
+                        </div>
+
+                        <span
+                          className={`demo-customer-status ${
+                            customer.status === "Active"
+                              ? "status-active"
+                              : "status-pending"
+                          }`}
+                        >
+                          {customer.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* PAYMENTS */}
+              {demoTab === "payments" && (
+                <div className="demo-tab-content">
+                  <div className="demo-project-heading">
+                    <h4>Recent Transactions</h4>
+                    <span>{samplePayments.length} Sample Payments</span>
+                  </div>
+
+                  <div className="demo-payment-summary">
+                    <div>
+                      <span>Total Received</span>
+                      <strong>$3,650.00</strong>
+                    </div>
+
+                    <div>
+                      <span>Pending Invoices</span>
+                      <strong>$850.00</strong>
+                    </div>
+                  </div>
+
+                  <div className="demo-payment-list">
+                    {samplePayments.map((payment) => (
+                      <div
+                        className="demo-payment-row"
+                        key={payment.invoice}
+                      >
+                        <div className="demo-payment-icon">
+                          <CreditCard size={17} />
+                        </div>
+
+                        <div className="demo-payment-info">
+                          <strong>{payment.invoice}</strong>
+                          <span>{payment.customer}</span>
+                          <small>{payment.date}</small>
+                        </div>
+
+                        <div className="demo-payment-right">
+                          <strong>{payment.amount}</strong>
+
+                          <span
+                            className={`demo-payment-status ${
+                              payment.status.toLowerCase()
+                            }`}
+                          >
+                            {payment.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ANALYTICS */}
               {demoTab === "analytics" && (
                 <div className="demo-tab-content">
                   <div className="demo-analytics-heading">
@@ -497,10 +698,17 @@ function Products() {
                   <div className="demo-chart">
                     {[35, 55, 42, 75, 60, 88, 68, 95, 72, 82, 65, 100].map(
                       (height, index) => (
-                        <div className="demo-chart-column" key={index}>
+                        <div
+                          className="demo-chart-column"
+                          key={index}
+                        >
                           <span style={{ height: `${height}%` }}></span>
+
                           <small>
-                            {["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"][index]}
+                            {[
+                              "J", "F", "M", "A", "M", "J",
+                              "J", "A", "S", "O", "N", "D",
+                            ][index]}
                           </small>
                         </div>
                       )
@@ -540,10 +748,8 @@ function Products() {
               <ArrowRight size={16} />
             </a>
           </div>
-
         </div>
       </section>
-
 
       {/* PRODUCT DETAILS MODAL */}
       {selectedProduct && (
@@ -558,7 +764,6 @@ function Products() {
             aria-modal="true"
             aria-labelledby="product-modal-title"
           >
-
             <button
               className="modal-close"
               onClick={() => setSelectedProduct(null)}
@@ -623,7 +828,6 @@ function Products() {
                 Close
               </button>
             </div>
-
           </div>
         </div>
       )}
